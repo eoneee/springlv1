@@ -19,7 +19,7 @@ public class Crud extends Timestamped{
     private String title;
     private String author;
     private String content;
-    private Integer password;
+    private String password;
 
 
     public Crud(CrudRequestDto requestDto) {

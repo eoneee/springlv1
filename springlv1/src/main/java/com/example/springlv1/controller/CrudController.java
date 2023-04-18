@@ -47,15 +47,17 @@ public class CrudController {
 
     //수정하기
     @PutMapping("/post/{id}")
-    public CrudResponseDto updateCrud(@PathVariable Long id, @RequestBody CrudRequestDto requestDto) {
+//    public CrudResponseDto updateCrud(@PathVariable Long id, @RequestBody CrudRequestDto requestDto) {
+        public CrudResponseDto updateCrud(@PathVariable Long id, @RequestBody CrudRequestDto requestDto) {
         return crudService.updateCrud(id,requestDto);
+//        return crudService.updateCrud(id,requestDto);
     }
 
 
     //삭제
-    @DeleteMapping("/post/{id}")
-    public String deleteCrud(@PathVariable Long id) {
-        return  crudService.deleteCrud(id);
+    @DeleteMapping("/post/{id}/{password}")
+    public String deleteCrud(@PathVariable Long id, @PathVariable String password) {
+        return  crudService.deleteCrud(id,password);
 
     }
 

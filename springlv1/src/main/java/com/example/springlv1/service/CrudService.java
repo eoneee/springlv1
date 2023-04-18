@@ -4,13 +4,19 @@ import com.example.springlv1.dto.CrudRequestDto;
 import com.example.springlv1.dto.CrudResponseDto;
 import com.example.springlv1.entity.Crud;
 import com.example.springlv1.repository.CrudRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
+import static java.lang.String.valueOf;
 
 @Service
 public class CrudService {
@@ -56,10 +62,19 @@ public class CrudService {
     @Transactional
     public CrudResponseDto updateCrud(Long id,CrudRequestDto requestDto){
         //수정하기 위해 받아온 crud의 id를 사용하여 해당 crud 인스턴스가 존재하는지 확인하고 가져오기
-//        Crud crud = table.get(id);
+        //Crud crud = table.get(id);
+        //게시글이 id가 null인지확인
         Crud crud = checkCrud(id);
-        crud.update(requestDto);
-        return new CrudResponseDto(crud);
+
+        //비밀번호 일치하는지 확인
+        if(requestDto.getPassword().equals(crud.getPassword())){
+            crud.update(requestDto);
+            return new CrudResponseDto(crud);
+//            return new CrudResponseDto(crud);
+        }else{
+            return new CrudResponseDto(crud);
+//            return new CrudResponseDto(crud);
+        }
 //        Crud crud = crudRepository.fi(id);
 //        if(crud != null){
 //            crud.update(requestDto);
@@ -67,16 +82,20 @@ public class CrudService {
 //        }else{
 //            return new CrudResponseDto();
 //        }
+
+
+
     }
 
 
     //삭제
-    public String deleteCrud(Long id){
+    public String deleteCrud(Long id,String password){
         //삭제하기 위해 받아온 crud의 id를 사용하여 해당 crud 인스턴스가 존재하는지 확인하고 가져오기
 //        Crud crud = table.get(id);
         Crud crud = checkCrud(id);
-        //spring jpa가 되면서 id->crud
-        crudRepository.delete(crud);
+        if(crud.getPassword().equals(password))
+            //spring jpa가 되면서 id->crud
+            crudRepository.delete(crud);
 
 //        crudRepository.delete(id);
 //        Crud crud = crudRepository.getCrud(id);
