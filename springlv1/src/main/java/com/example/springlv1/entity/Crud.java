@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Crud {
+public class Crud extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
