@@ -1,20 +1,57 @@
 package com.example.springlv1.repository;
 
 import com.example.springlv1.dto.CrudRequestDto;
-import com.example.springlv1.dto.CrudResponseDto;
 import com.example.springlv1.entity.Crud;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Repository
 public class CrudRepository {
-    private static final Map<Long, Crud> table = new HashMap<>();
-    private static long ID;
 
+    //JPA코드
+    @PersistenceContext
+    EntityManager em;
+
+    @Transactional
+    public void save(Crud crud){
+        //저장
+        em.persist(crud);
+    }
+
+    //게시글 단일 조회
+    @Transactional
+    public Optional<Crud> findById(Long id){
+        //id 받아와서 찾기
+        Crud crud = em.find(Crud.class, id);
+        return Optional.ofNullable(crud);
+    }
+
+    //게시글 전체 조회
+    @Transactional
+    public List<Crud> findAll(){
+        //JPAQuery
+        return em.createQuery("select c from Crud c", Crud.class).getResultList();
+    }
+
+//    @Transactional
+//    public void update(Crud crud){
+//        Crud crud = em.find(Crud.class, id);
+//        crud.update(requestDto);
+//    }
+
+    @Transactional
+    public void delete(Long id){
+        Crud crud = em.find(Crud.class, id);
+        em.remove(crud);
+    }
+
+
+    /*
     //글 생성하기
     public String createCrud(Crud crud) {
         //ID 중복을 막기위해서 현재 table을 최대 ID + 1
@@ -48,6 +85,8 @@ public class CrudRepository {
     public void deleteCrud(Long id) {
         table.remove(id);
     }
+
+     */
 
 
 }

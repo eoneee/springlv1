@@ -1,9 +1,19 @@
 package com.example.springlv1.entity;
 import com.example.springlv1.dto.CrudRequestDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Getter
+@Entity
+@NoArgsConstructor
 public class Crud {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //private이기 때문에 controller에서 못쓰니까 method -> Getter
     private String title;
@@ -11,9 +21,6 @@ public class Crud {
     private String content;
     private Integer password;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Crud(CrudRequestDto requestDto) {
         this.title = requestDto.getTitle();
