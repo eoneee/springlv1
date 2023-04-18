@@ -4,6 +4,7 @@ import com.example.springlv1.dto.CrudRequestDto;
 import com.example.springlv1.dto.CrudResponseDto;
 import com.example.springlv1.entity.Crud;
 import com.example.springlv1.service.CrudService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -16,7 +17,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class CrudController {
 
-    private final CrudService crudService = new CrudService();
+    //private final CrudService crudService = new CrudService();
+    //Autowired로 새로 선언 안할 수 있게 만들어 줌
+    private final CrudService crudService;
+    @Autowired
+    public CrudController(CrudService crudService) {
+        this.crudService = crudService;
+    }
 
     //글 생성하기
     @PostMapping("/post")
