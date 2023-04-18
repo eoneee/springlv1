@@ -58,4 +58,9 @@ public class CrudController {
         return  crudService.deleteCrud(id);
 
     }
+
+    @GetMapping("/title/{title}")
+    public CrudResponseDto getCrudByTitle(@PathVariable String title){
+        return crudService.getCrudByTitle(title);
+    }
 }

@@ -42,9 +42,7 @@ public class CrudService {
     public CrudResponseDto getCrud(Long id){
         //조회하기 위해 받아온 crud의 id를 사용해서 해당 crud인스턴스가 테이블에 존재 하는지 확인하고 가져오기
         //Crud crud = table.get(id);->repository한테서 id를 가져오면 됨
-        Crud crud = crudRepository.findById(id).orElseThrow(
-                ()->new NullPointerException("글이 존재하지 않습니다.")
-        );
+        Crud crud = checkCrud(id);
 //        위에서 예외 처리 해줌
 //        if(crud != null){
 //            return new CrudResponseDto(crud);
@@ -59,9 +57,7 @@ public class CrudService {
     public CrudResponseDto updateCrud(Long id,CrudRequestDto requestDto){
         //수정하기 위해 받아온 crud의 id를 사용하여 해당 crud 인스턴스가 존재하는지 확인하고 가져오기
 //        Crud crud = table.get(id);
-        Crud crud = crudRepository.findById(id).orElseThrow(
-                ()->new NullPointerException("글이 존재하지 않습니다.")
-        );
+        Crud crud = checkCrud(id);
         crud.update(requestDto);
         return new CrudResponseDto(crud);
 //        Crud crud = crudRepository.fi(id);
@@ -78,11 +74,11 @@ public class CrudService {
     public String deleteCrud(Long id){
         //삭제하기 위해 받아온 crud의 id를 사용하여 해당 crud 인스턴스가 존재하는지 확인하고 가져오기
 //        Crud crud = table.get(id);
-        Crud crud = crudRepository.findById(id).orElseThrow(
-                ()->new NullPointerException("글이 존재하지 않습니다.")
-        );
+        Crud crud = checkCrud(id);
+        //spring jpa가 되면서 id->crud
+        crudRepository.delete(crud);
 
-        crudRepository.delete(id);
+//        crudRepository.delete(id);
 //        Crud crud = crudRepository.getCrud(id);
 //        if(crud != null){
 ////            table.remove(id);
@@ -94,4 +90,17 @@ public class CrudService {
         return "삭제 성공";
     }
 
+    private Crud checkCrud(Long id) {
+        Crud crud = crudRepository.findById(id).orElseThrow(
+                ()->new NullPointerException("글이 존재하지 않습니다.")
+        );
+        return crud;
+    }
+
+    public CrudResponseDto getCrudByTitle(String title) {
+        Crud crud = crudRepository.findByTitle(title).orElseThrow(
+                () -> new NullPointerException("해당하는 제목의 글이 없습니다.")
+        );
+        return new CrudResponseDto(crud);
+    }
 }

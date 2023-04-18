@@ -2,6 +2,7 @@ package com.example.springlv1.repository;
 
 import com.example.springlv1.dto.CrudRequestDto;
 import com.example.springlv1.entity.Crud;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +11,14 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
+//spring data JPA
+public interface CrudRepository extends JpaRepository<Crud, Long> {
+    Optional<Crud> findByTitle(String title);
+
+}
+
+/**
 @Repository
 public class CrudRepository {
 
@@ -49,7 +58,7 @@ public class CrudRepository {
         Crud crud = em.find(Crud.class, id);
         em.remove(crud);
     }
-
+    **/
 
     /*
     //글 생성하기
@@ -86,7 +95,8 @@ public class CrudRepository {
         table.remove(id);
     }
 
-     */
+
 
 
 }
+*/
