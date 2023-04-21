@@ -40,7 +40,8 @@ public class CrudService {
     //메인 페이지
     public List<CrudResponseDto> getCrudList(){
         //테이블에 저장되어있는 모든 글을 조회
-        return crudRepository.findAll().stream().map(CrudResponseDto::new).collect(Collectors.toList());
+        //내림차순
+        return crudRepository.findAllByOrderByModifiedAtDesc().stream().map(CrudResponseDto::new).collect(Collectors.toList());
 
     }
 
@@ -60,21 +61,32 @@ public class CrudService {
 
     //수정하기
     @Transactional
-    public CrudResponseDto updateCrud(Long id,CrudRequestDto requestDto){
+    public ResponseEntity<?> update(Long id,CrudRequestDto requestDto){
+//        public CrudResponseDto updateCrud(Long id,CrudRequestDto requestDto){
         //수정하기 위해 받아온 crud의 id를 사용하여 해당 crud 인스턴스가 존재하는지 확인하고 가져오기
         //Crud crud = table.get(id);
         //게시글이 id가 null인지확인
         Crud crud = checkCrud(id);
 
         //비밀번호 일치하는지 확인
-        if(requestDto.getPassword().equals(crud.getPassword())){
+//        if(requestDto.getPassword().equals(crud.getPassword())){
+//            crud.update(requestDto);
+//            return new CrudResponseDto(crud);
+//        }else{
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+
+//            return new CrudResponseDto(crud);
+//        }
+//        return new CrudResponseDto(crud);
+
+        if(crud.getPassword().equals(requestDto.getPassword())){
             crud.update(requestDto);
-            return new CrudResponseDto(crud);
-//            return new CrudResponseDto(crud);
+            return ResponseEntity.ok(new CrudResponseDto(crud));
         }else{
-            return new CrudResponseDto(crud);
-//            return new CrudResponseDto(crud);
+            return new ResponseEntity<>("비밀번호가 일치하지 않습니다.",HttpStatus.UNAUTHORIZED);
         }
+
+
 //        Crud crud = crudRepository.fi(id);
 //        if(crud != null){
 //            crud.update(requestDto);

@@ -2,15 +2,12 @@ package com.example.springlv1.controller;
 
 import com.example.springlv1.dto.CrudRequestDto;
 import com.example.springlv1.dto.CrudResponseDto;
-import com.example.springlv1.entity.Crud;
 import com.example.springlv1.service.CrudService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 //클라이언츠의 요청을 하나씩 연결해줌
@@ -48,9 +45,9 @@ public class CrudController {
     //수정하기
     @PutMapping("/post/{id}")
 //    public CrudResponseDto updateCrud(@PathVariable Long id, @RequestBody CrudRequestDto requestDto) {
-        public CrudResponseDto updateCrud(@PathVariable Long id, @RequestBody CrudRequestDto requestDto) {
-        return crudService.updateCrud(id,requestDto);
+        public ResponseEntity<?> updateCrud(@PathVariable Long id, @RequestBody CrudRequestDto requestDto) {
 //        return crudService.updateCrud(id,requestDto);
+        return crudService.update(id,requestDto);
     }
 
 

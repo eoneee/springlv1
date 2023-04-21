@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 //spring data JPA
 public interface CrudRepository extends JpaRepository<Crud, Long> {
     Optional<Crud> findByTitle(String title);
-
+    Collection<Crud> findAllByOrderByModifiedAtDesc();
 }
 
 /**
